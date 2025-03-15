@@ -8,11 +8,13 @@ export default defineConfig({
     outDir: "dist",
     rollupOptions: {
       input: {
-        contentScript: "./src/content-scripts/contentScript.js",
+        contentScript: "src/content-scripts/contentScript.ts",
         popup: "index.html"
       },
       output: {
-        entryFileNames: (chunk) => chunk.name == "contentScript" ? "[name].js" : "assets/[name]-[hash].js",
+        entryFileNames(chunkInfo) {
+          return chunkInfo.name === "contentScript" ? "[name].js" : "assets/[name]-[hash].js"
+        }
       }
     }
   }

@@ -13,9 +13,8 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
-      "js": ["contentScript.js"],
-      "css": ["contentStyle.css"]
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
     }
   ],
 
