@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "AI Assistant",
+  "version": "1.0.0",
+  "description": "AI Assistant",
+
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["*://*/*"],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["contentScript.js"],
+      "css": ["contentStyle.css"]
+    }
+  ],
+
+  "action": {
+    "default_popup": "index.html"
+  }
+}
