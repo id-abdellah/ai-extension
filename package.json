@@ -1,5 +1,5 @@
 {
-  "name": "aiextension",
+  "name": "readease",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -11,6 +11,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/chrome": "^0.0.309",
+    "localforage": "^1.10.0",
+    "lucide-react": "^0.482.0",
     "marked": "^15.0.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

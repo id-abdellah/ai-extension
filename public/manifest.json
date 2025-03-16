@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AI Assistant",
+  "name": "ReadEase",
   "version": "1.0.0",
-  "description": "AI Assistant",
+  "description": "AI assistant extnsion for readers.",
 
   "permissions": ["storage", "tabs", "scripting"],
   "host_permissions": ["*://*/*"],
