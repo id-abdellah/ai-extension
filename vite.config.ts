@@ -8,7 +8,7 @@ export default defineConfig({
     outDir: "dist",
     rollupOptions: {
       input: {
-        contentScript: "src/content-scripts/contentScript.ts",
+        contentScript: "public/contentScript.ts",
         popup: "index.html"
       },
       output: {
