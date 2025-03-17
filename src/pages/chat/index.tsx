@@ -5,7 +5,8 @@ import localforage from "localforage";
 import ReactMarkdown from "react-markdown"
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css"
-import { LoaderCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type Which = "user" | "ai"
 
@@ -15,6 +16,7 @@ type Message = {
 }
 
 export default function ChatAI() {
+    const navigate = useNavigate()
 
     /** inserted prompt & localforage stored conversations */
     const [prompt, setPrompt] = useState<string>("");
@@ -45,12 +47,14 @@ export default function ChatAI() {
         })()
     }, [converstaionStorage])
 
+    /** dicided if the send prompt button needs to be disabled or not */
     const isDisabled: () => boolean = () => prompt.length === 0 || isLoading;
 
     const onBtnClick = async () => {
         const text = prompt
         addToConversation(text, "user")
         setPrompt("")
+        setIsLoading(true)
         try {
             setIsLoading(true)
             setIsError(false)
@@ -63,6 +67,9 @@ export default function ChatAI() {
         }
     }
 
+    /**
+     * add conversation messages to the storage "localforage" one by one
+     */
     const addToConversation = async (content: string, which: Which) => {
         let data: Message[] | null = await localforage.getItem("conversation")
         if (data === null) {
@@ -89,13 +96,14 @@ export default function ChatAI() {
         setConversationStorage([])
     }
 
-
-
     return (
         <div className="bg-bg h-[400px] px-2 pb-2 pt-0 flex flex-col" data-selector="chatConversation">
-            {
-                converstaionStorage?.length !== 0 && converstaionStorage !== null && <button className="block w-fit text-xs py-[5px] text-on_surface hover:underline" onClick={clearConversation}>Clear conversation</button>
-            }
+            <div className="flex gap-2 items-center justify-between py-[5px] mb-2">
+                <ArrowLeft size={14} className="cursor-pointer transition-colors hover:brightness-90" onClick={() => navigate(-1)} />
+                {
+                    converstaionStorage?.length !== 0 && converstaionStorage !== null && <button className="block w-fit text-xs text-on_surface hover:underline" onClick={clearConversation}>Clear conversation</button>
+                }
+            </div>
             <div className="flex-1 overflow-auto flex flex-col gap-4" ref={chatWrapperRef}>
                 {
                     converstaionStorage?.map((message: Message, i) => {
@@ -117,10 +125,6 @@ export default function ChatAI() {
                         }
                     })
                 }
-
-                {
-                    isLoading && <LoaderCircle size={14} />
-                }
             </div>
 
             <div className="relative" data-selector="chatInput">
@@ -130,7 +134,7 @@ export default function ChatAI() {
                     className="bg-[#303030] font-sans rounded-md focus:outline-none block w-full mt-2 py-2 pl-2 pr-9 resize-none"
                     placeholder="Ask Anything"
                 />
-                <SendButton isDisabled={isDisabled} onClick={onBtnClick} />
+                <SendButton isDisabled={isDisabled} onClick={onBtnClick} isLoading={isLoading} />
             </div>
         </div>
     )

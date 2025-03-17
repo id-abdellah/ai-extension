@@ -2,6 +2,7 @@ import { Brain } from "lucide-react"
 import { Route, Routes } from "react-router-dom"
 import Home from "./pages/home"
 import ChatAI from "./pages/chat"
+import Explain from "./pages/explain"
 
 export default function Popup() {
 
@@ -17,6 +18,7 @@ export default function Popup() {
             <Route path="/index.html" element={<Home />} />
             {/* <Route path="/" element={<Home />} /> */}
             <Route path="/chat" element={<ChatAI />} />
+            <Route path="explain" element={<Explain />} />
          </Routes>
 
       </div>
