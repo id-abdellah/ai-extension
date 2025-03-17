@@ -1,7 +1,11 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SendButton from "./SendButton";
 import { AIResponse } from "../../api/api";
 import localforage from "localforage";
+import ReactMarkdown from "react-markdown"
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github-dark.css"
+import { LoaderCircle } from "lucide-react";
 
 type Which = "user" | "ai"
 
@@ -12,13 +16,34 @@ type Message = {
 
 export default function ChatAI() {
 
+    /** inserted prompt & localforage stored conversations */
     const [prompt, setPrompt] = useState<string>("");
-
     const [converstaionStorage, setConversationStorage] = useState<null | Message[]>(null)
 
-
+    /** for prompt fetching purpose */
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [, setIsError] = useState<boolean>(false)
+
+    /** chat conversation element */
+    const chatWrapperRef = useRef<null | HTMLDivElement>(null)
+
+    useEffect(() => {
+        /** always scroll to bottom in chat conversation element */
+        if (chatWrapperRef.current) {
+            const el = chatWrapperRef.current;
+            const elChilds: ChildNode[] = Array.from(el.childNodes)
+            if (elChilds.length !== 0) {
+                const lastMessage = elChilds[elChilds.length - 1] as HTMLDivElement
+                lastMessage.scrollIntoView({ behavior: "smooth" })
+            }
+        }
+
+        /** bring stored conversation data in the localforage when the component is mounted */
+        if (converstaionStorage) return;
+        (async () => {
+            setConversationStorage(await localforage.getItem("conversation"))
+        })()
+    }, [converstaionStorage])
 
     const isDisabled: () => boolean = () => prompt.length === 0 || isLoading;
 
@@ -55,15 +80,47 @@ export default function ChatAI() {
         setConversationStorage(data)
     }
 
+    /**
+     * setting the "conversation" key in the localforage to empty array []
+     */
     const clearConversation = async () => {
+        if (!confirm("You wanna clear the conversation? ")) return
         await localforage.setItem("conversation", [])
+        setConversationStorage([])
     }
 
+
+
     return (
-        <div className="bg-bg h-[400px] p-2 flex flex-col">
+        <div className="bg-bg h-[400px] px-2 pb-2 pt-0 flex flex-col" data-selector="chatConversation">
+            {
+                converstaionStorage?.length !== 0 && converstaionStorage !== null && <button className="block w-fit text-xs py-[5px] text-on_surface hover:underline" onClick={clearConversation}>Clear conversation</button>
+            }
+            <div className="flex-1 overflow-auto flex flex-col gap-4" ref={chatWrapperRef}>
+                {
+                    converstaionStorage?.map((message: Message, i) => {
+                        if (message.type === "user") {
+                            return (
+                                <div key={i} className="bg-surface p-3 rounded-md max-w-[80%] text-sm ml-auto">
+                                    {message.messageContent}
+                                </div>
+                            )
 
-            <div className="flex-1 overflow-auto">
+                        } else if (message.type === "ai") {
+                            return (
+                                <div
+                                    data-selector="generatedMDBody"
+                                    key={i}>
+                                    <ReactMarkdown rehypePlugins={[rehypeHighlight]}>{message.messageContent}</ReactMarkdown>
+                                </div>
+                            )
+                        }
+                    })
+                }
 
+                {
+                    isLoading && <LoaderCircle size={14} />
+                }
             </div>
 
             <div className="relative" data-selector="chatInput">

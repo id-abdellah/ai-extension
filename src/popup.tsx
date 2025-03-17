@@ -14,8 +14,8 @@ export default function Popup() {
          </nav>
 
          <Routes>
-            {/* <Route path="/index.html" element={<Home />} /> */}
-            <Route path="/" element={<Home />} />
+            <Route path="/index.html" element={<Home />} />
+            {/* <Route path="/" element={<Home />} /> */}
             <Route path="/chat" element={<ChatAI />} />
          </Routes>
 

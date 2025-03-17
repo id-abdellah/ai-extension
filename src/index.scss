@@ -20,3 +20,59 @@
         display: none;
     }
 }
+
+[data-selector="chatConversation"] {
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+[data-selector="generatedMDBody"] {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    border-radius: 8px;
+
+    p {
+        margin-bottom: 16px;
+        /* Adds spacing between paragraphs */
+    }
+
+    h1,
+    h2,
+    h3 {
+        color: #ffffff;
+        margin-top: 20px;
+        font-weight: 600;
+    }
+
+    code {
+        font-family: "Fira Code", monospace;
+        background: #282c34;
+        padding: 3px 6px;
+        border-radius: 4px;
+        color: #e3e3e3;
+    }
+
+    blockquote {
+        border-left: 4px solid #4caf50;
+        padding-left: 12px;
+        color: #aaaaaa;
+        font-style: italic;
+        margin: 10px 0;
+    }
+
+    ul,
+    ol {
+        padding-left: 20px;
+    }
+
+    a {
+        color: #4fa3ff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+}
