@@ -2,12 +2,11 @@ import { Brain } from "lucide-react"
 import { Route, Routes } from "react-router-dom"
 import Home from "./pages/home"
 import ChatAI from "./pages/chat"
-import Explain from "./pages/explain"
 
 export default function Popup() {
 
    return (
-      <div className="w-[380px] h-[250px]" id="extensionWrapper" data-theme="dark">
+      <div className="w-[380px] h-fit" id="extensionWrapper" data-theme="dark">
 
          <nav className="bg-surface py-3 px-3 flex justify-between items-center font-semibold text-md">
             <div><Brain /></div>
@@ -18,7 +17,6 @@ export default function Popup() {
             <Route path="/index.html" element={<Home />} />
             {/* <Route path="/" element={<Home />} /> */}
             <Route path="/chat" element={<ChatAI />} />
-            <Route path="explain" element={<Explain />} />
          </Routes>
 
       </div>

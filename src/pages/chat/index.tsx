@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import SendButton from "./SendButton";
-import { AIResponse } from "../../api/api";
+import { AIResponse } from "../../utils/api";
 import localforage from "localforage";
 import ReactMarkdown from "react-markdown"
 import rehypeHighlight from "rehype-highlight";
